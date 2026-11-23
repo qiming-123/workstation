@@ -1,0 +1,19 @@
+{
+  "name": "workstation",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node server/start.mjs",
+    "init": "node tools/init-config.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.1.5",
+    "@fastify/http-proxy": "11.6.10",
+    "fastify": "5.12.8"
+  },
+  "devDependencies": {
+    "playwright-core": "1.65.1"
+  }
+}

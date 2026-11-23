@@ -36,7 +36,7 @@ workstation 是一个个人网站，用于：
 | 首版需求规格（唯一需求入口，后续拆分） | `SPEC.md` | 已存在 |
 | 产品需求、用户流程、验收条件 | `docs/product-specs/` | 待创建（SPEC.md 拆分后启用） |
 | 技术设计、方案取舍及依据 | `docs/design-docs/`（含 `index.md` 与公网接入方案对比） | 已存在 |
-| 执行计划：进行中 / 已完成 / 技术债 | [首版开发路线图](docs/exec-plans/active/README.md)、`docs/exec-plans/completed/`、`docs/exec-plans/tech-debt-tracker.md` | 计划 001–007 已建档，002 已归档；技术债清单待创建 |
+| 执行计划：进行中 / 已完成 / 技术债 | [首版开发路线图](docs/exec-plans/active/README.md)、`docs/exec-plans/completed/`、`docs/exec-plans/tech-debt-tracker.md` | 002–004 已归档，006 待 005 联调；技术债清单待创建 |
 | 会话交接记录 | `docs/exec-plans/handoffs/`（含 `README.md` 规则与首份记录） | 已存在 |
 | 供 AI 查阅的技术参考（整理版） | `docs/references/` | 待创建 |
 | 原始参考资料（保持原样） | `docs/references/raw/` | 待创建 |

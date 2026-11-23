@@ -1,0 +1,12 @@
+{
+  "username": "由部署者填写",
+  "passwordHash": "由 npm run init 生成",
+  "cookieSecret": "由 npm run init 生成",
+  "publicOrigin": "http://127.0.0.1:32100",
+  "port": 32100,
+  "vscodePath": null,
+  "fileBackend": {
+    "origin": "http://127.0.0.1:32101",
+    "password": "由 npm run init 生成"
+  }
+}

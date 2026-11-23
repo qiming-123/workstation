@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | 1 | 服务端运行时 | **Node.js LTS + 轻量框架（Fastify 方向）**，承担认证/动作/RDP/UI；文件后端见 #8 | 前后端同语言；spawn WSL 命令直接 | 开源用户需装 Node；主机同时跑 Node + Python 两个进程 |
 | 2 | 前端 | **原生 HTML/JS，无构建** | 仅 4 页；demos 已证明无框架可达设计水准；开源门槛低 | 状态管理手写；页面增多后再评估迁移 |
-| 3 | 存储 | **无数据库**：`config.json`（预设动作）+ 签名 HttpOnly Cookie 会话 | 持久化数据极少；满足"凭据走配置"的开源约束 | 未来加传输记录等再引 SQLite（逃生通道） |
+| 3 | 存储 | **无数据库**：`config.json`（启动配置）、`actions.json`（预设动作与客户端 WSL 目标）、签名 HttpOnly Cookie 会话 | 网页设置可独立持久化，凭据文件只由主机配置 | 未来加传输记录等再引 SQLite |
 | 4 | HTTPS / 域名 | **首版不用域名，HTTP + 应用层认证** | 用户无域名且暂不购买 | 链路明文风险，必须写进 README；升级路径：域名 + frp TLS，应用无需改 |
 | 5 | 预设动作边界 | **白名单** | 认证被突破时攻击面限于预配置动作 | 不能在网页上临时敲命令 |
 | 6 | RDP 实现 | **登录后按需下载 .rdp** | 最简单、体验同原生 mstsc；3389 不常驻公网映射 | 多一步双击；深链/内嵌方案未选 |
@@ -30,12 +30,12 @@ VPS：frps（只做转发，不存数据）
    ├─ 认证中间件：密码校验 → 签名 Cookie；一切请求（含文件请求）的前置
    ├─ 文件请求 → 反向代理至 copyparty（仅监听 127.0.0.1 另一端口）
    │     copyparty：全盘浏览、上传（断点续传）、下载、重命名、删除、预览
-   ├─ 动作 API：仅执行 config.json 白名单内的命令（child_process spawn）
+   ├─ 动作 API：按 actions.json 中保存的标识触发预设（child_process spawn）
    ├─ RDP API：按 config 临时生成 .rdp 文件供下载
-   └─ 设置 API：读写 config.json（预设动作增删）
+   └─ 设置 API：读写 actions.json（预设动作增删、客户端 WSL 目标）
 ```
 
-- **认证怎么覆盖文件模块**：copyparty 仅监听回环，Node 中间件先验 Cookie 再转发。[计划 002](../exec-plans/completed/002-file-backend-validation.md) 已实测 Node 向后端注入独立的 copyparty 凭据，浏览器会话 Cookie 只交给 Node；正式集成在 003、004 落地。
+- **认证怎么覆盖文件模块**：copyparty 仅监听回环。已实现 Node 中间件先校验浏览器会话，再向 `/storage/` 的后端请求注入独立凭据。浏览器会话 Cookie 只交给 Node。[计划 002](../exec-plans/completed/002-file-backend-validation.md)
 - **为什么没有域名也能活**：frp 用 IP+端口映射 HTTP 通道，TLS 缺席由"单用户 + 强密码 + 白名单动作 + README 风险提示"兜底，后续绑域名即平滑升级。
 - **RDP 不走红**：`.rdp` 按需生成，3389 不做长期公网映射；如需更强可改 frp `stcp`（访问端跑 frpc），留作后话。
 - **稳定性前提与回退**：用户明确混合架构以运行正常为基础。实施时先做一个最小集成验证（认证打通 + 上传/下载/预览跑通）；不达标则切换回退方案（Node 全栈 + uppy + tus-node-server），切换只影响文件模块，其余决策不变。
@@ -54,9 +54,9 @@ VPS：frps（只做转发，不存数据）
 
 ## 4. 待验证清单（实施前实测）
 
-1. `vscode://` WSL 深链真实格式（形如 `vscode://vscode-remote/wsl+<发行版>/<路径>`）在本机实测——Demo 中为占位。
+1. `vscode://` WSL 深链已从 Chrome 在本机打开 Debian 目标；主机预设动作独立实测。[计划 006](../exec-plans/active/006-actions-and-vscode.md)
 2. **copyparty 最小集成已通过**：Windows 回环监听、认证代理、浏览器小文件操作和预览均通过。任务计划程序已能拉起后端，整机重启后自动恢复由 007 验证。[实测与复现步骤](../exec-plans/completed/002-file-backend-validation.md)
-3. copyparty 对数 GB 文件的断点续传与预览/缩略图性能（结合 200M 共享峰值带宽实测吞吐与中断率）。
+3. 本机 2 GiB 经认证上传、下载续传和网页预览已通过，公网吞吐和恢复待 007。[计划 004](../exec-plans/completed/004-file-management.md)
 4. frp `stcp`/TCP 映射与 .rdp 按需生成的配合流程（在计划 001 隧道打通后验证）。
 5. （回退路径才需要）tus-node-server 与当前 Node LTS 的兼容性、uppy 无构建引入方式。
 
