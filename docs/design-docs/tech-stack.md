@@ -35,7 +35,7 @@ VPS：frps（只做转发，不存数据）
    └─ 设置 API：读写 config.json（预设动作增删）
 ```
 
-- **认证怎么覆盖文件模块**：copyparty 不直接对外，只接受来自 Node 层的本机代理请求；Node 中间件先验 Cookie 再转发。两层认证的具体对接方式（copyparty 侧关闭自身账号体系或配置单向信任）列入待验证清单。
+- **认证怎么覆盖文件模块**：copyparty 仅监听回环，Node 中间件先验 Cookie 再转发。[计划 002](../exec-plans/completed/002-file-backend-validation.md) 已实测 Node 向后端注入独立的 copyparty 凭据，浏览器会话 Cookie 只交给 Node；正式集成在 003、004 落地。
 - **为什么没有域名也能活**：frp 用 IP+端口映射 HTTP 通道，TLS 缺席由"单用户 + 强密码 + 白名单动作 + README 风险提示"兜底，后续绑域名即平滑升级。
 - **RDP 不走红**：`.rdp` 按需生成，3389 不做长期公网映射；如需更强可改 frp `stcp`（访问端跑 frpc），留作后话。
 - **稳定性前提与回退**：用户明确混合架构以运行正常为基础。实施时先做一个最小集成验证（认证打通 + 上传/下载/预览跑通）；不达标则切换回退方案（Node 全栈 + uppy + tus-node-server），切换只影响文件模块，其余决策不变。
@@ -55,7 +55,7 @@ VPS：frps（只做转发，不存数据）
 ## 4. 待验证清单（实施前实测）
 
 1. `vscode://` WSL 深链真实格式（形如 `vscode://vscode-remote/wsl+<发行版>/<路径>`）在本机实测——Demo 中为占位。
-2. **copyparty 最小集成验证**：Windows 主机上的运行与开机自启方式；Node 认证中间件与 copyparty 的对接（其自身账号体系的关闭/信任配置）；上传/下载/重命名/删除/预览经代理后全部正常。
+2. **copyparty 最小集成已通过**：Windows 回环监听、认证代理、浏览器小文件操作和预览均通过。任务计划程序已能拉起后端，整机重启后自动恢复由 007 验证。[实测与复现步骤](../exec-plans/completed/002-file-backend-validation.md)
 3. copyparty 对数 GB 文件的断点续传与预览/缩略图性能（结合 200M 共享峰值带宽实测吞吐与中断率）。
 4. frp `stcp`/TCP 映射与 .rdp 按需生成的配合流程（在计划 001 隧道打通后验证）。
 5. （回退路径才需要）tus-node-server 与当前 Node LTS 的兼容性、uppy 无构建引入方式。
