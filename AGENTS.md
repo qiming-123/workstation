@@ -30,7 +30,7 @@ workstation 是一个个人网站，用于：
 | 内容 | 位置 | 状态 |
 |---|---|---|
 | 项目入口（本文件） | `AGENTS.md` | 已存在 |
-| GitHub 远程仓库 | 发布后在此处补充仓库地址 | 待发布（当前为纯本地仓库，无提交） |
+| GitHub 远程仓库 | https://github.com/qiming-123/workstation | 已发布（2026-11-23 首次推送；账号 qiming-123） |
 | 系统架构与模块关系 | `ARCHITECTURE.md` | 已存在 |
 | 首版需求规格（唯一需求入口，后续拆分） | `SPEC.md` | 已存在 |
 | 产品需求、用户流程、验收条件 | `docs/product-specs/` | 待创建（SPEC.md 拆分后启用） |
