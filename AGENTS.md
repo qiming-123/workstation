@@ -22,6 +22,7 @@ workstation 是一个个人网站，用于：
 - **只链接真实存在的文件**：计划中的资料只说明计划位置，不写成链接，不提前创建空文件。
 - **原始资料保持原样**：收进来的原始参考材料不修改；任何整理结果必须注明来源（原始文件路径或原始 URL）。
 - **一次只做被请求的事**：不主动扩展范围；除上条的云端对齐检查（只读）外，不执行用户未要求的 Git 提交、推送或部署。
+- **每次完成项目更新后同步两份用户手册**：核对详细版和精简版，并同步修改受影响的内容；核心功能及其用法没有变化时保留原文。两版只记录用户直接使用的核心功能，详细版写明必要前提和操作步骤，精简版保留主要入口和最短操作路径。根据实际可用状态标明演示或计划中的功能。
 
 ## 3. 已有资料
 
@@ -35,11 +36,12 @@ workstation 是一个个人网站，用于：
 | 首版需求规格（唯一需求入口，后续拆分） | `SPEC.md` | 已存在 |
 | 产品需求、用户流程、验收条件 | `docs/product-specs/` | 待创建（SPEC.md 拆分后启用） |
 | 技术设计、方案取舍及依据 | `docs/design-docs/`（含 `index.md` 与公网接入方案对比） | 已存在 |
-| 执行计划：进行中 / 已完成 / 技术债 | `docs/exec-plans/active/`（已有计划 001）、`docs/exec-plans/completed/`、`docs/exec-plans/tech-debt-tracker.md` | active 已存在，其余待创建 |
+| 执行计划：进行中 / 已完成 / 技术债 | [首版开发路线图](docs/exec-plans/active/README.md)、`docs/exec-plans/completed/`、`docs/exec-plans/tech-debt-tracker.md` | 计划 001–007 已建档；completed 和技术债清单待创建 |
 | 会话交接记录 | `docs/exec-plans/handoffs/`（含 `README.md` 规则与首份记录） | 已存在 |
 | 供 AI 查阅的技术参考（整理版） | `docs/references/` | 待创建 |
 | 原始参考资料（保持原样） | `docs/references/raw/` | 待创建 |
 | UI Demo（可打开的页面原型、界面草图） | `demos/` | 已存在 |
+| 用户手册（详细版、精简版） | [详细版](docs/user-manuals/detailed.md)、[精简版](docs/user-manuals/quick-start.md) | 已存在 |
 
 ## 4. 不同任务先读什么
 
@@ -61,3 +63,4 @@ workstation 是一个个人网站，用于：
 - **`docs/references/`**：供 AI 查阅的整理版技术参考（如 `xxx-llms.txt`）。
 - **`docs/references/raw/`（本项目补充约定）**：原始参考资料（下载的文档、剪藏的网页等），原样存放不修改；`docs/references/` 中的整理版必须注明对应的 raw 文件或来源 URL。
 - **`demos/`（本项目补充约定，2026-11-23 由 `ui-demos/` 更名确定）**：UI 页面原型与界面草图，独立 HTML 文件可直接打开查看；Demo 定稿后其设计决策回写 `docs/design-docs/`。
+- **`docs/user-manuals/`**：保存 `detailed.md` 和 `quick-start.md` 两份面向用户的手册，随项目更新维护。核心功能范围以需求规格为准，操作指引以实际界面和可用状态为准。
